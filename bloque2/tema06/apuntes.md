@@ -356,4 +356,4 @@ Esta base de datos es la que usaremos en el **[Tema 4, Parte C](../tema04/apunte
 | 443 | Apache (HTTPS) |
 | 3306 | MySQL |
 
-**Para consultar:** [XAMPP](https://www.apachefriends.org/es/index.html) · [Documentación de phpMyAdmin](https://docs.phpmyadmin.net/es/latest/)
+
