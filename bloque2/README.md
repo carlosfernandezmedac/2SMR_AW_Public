@@ -5,7 +5,7 @@ En el Bloque 1 hicimos páginas que **siempre se ven igual**. En este bloque les
 | Orden | Tema | Título | Qué harás |
 |-------|------|--------|-----------|
 | 1º | [Tema 6](tema06/apuntes.md) | Instalación de servidores de aplicaciones web | Instalar XAMPP y crear una base de datos de prueba con phpMyAdmin |
-| 2º | [Tema 4](tema04/apuntes.md) | Lenguajes de script cliente y servidor | Programar con JavaScript, con PHP y con PHP + base de datos |
+| 2º | [Tema 4](tema04/apuntes.md) | Lenguajes de script cliente y servidor | Programar con JavaScript, con PHP y con PHP  |
 
 > 📌 Damos **primero el Tema 6** porque PHP no se puede probar sin un servidor. Así, cuando lleguemos a PHP, ya tendremos XAMPP funcionando y la base de datos creada.
 

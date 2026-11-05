@@ -9,7 +9,7 @@
 | ¿Para qué sirve? | Que la página reaccione: botones, mensajes, cambiar textos | Procesar formularios, leer bases de datos |
 | ¿Cómo se escribe? | `<script> ... </script>` | `<?php ... ?>` |
 
-> 📌 **Antes de este tema** hemos visto el [Tema 6](../tema06/apuntes.md): ya tienes XAMPP instalado y la base de datos `biblioteca` creada. La **Parte A** (JavaScript) no lo necesita; las **Partes B y C** (PHP) sí.
+> 📌 **Antes de este tema** hemos visto el [Tema 6](../tema06/apuntes.md): ya tienes XAMPP instalado y la base de datos `biblioteca` creada. La **Parte A** (JavaScript) no lo necesita; las **Partes B** (PHP) sí.
 
 ## Índice
 
@@ -19,18 +19,15 @@
 3. [Buscar y cambiar elementos](#3-buscar-y-cambiar-elementos)
 4. [Crear elementos nuevos](#4-crear-elementos-nuevos)
 5. [Funciones y botones](#5-funciones-y-botones)
-6. [jQuery](#6-jquery)
+
 
 **Parte B: PHP en el servidor**
-7. [Dónde se escribe PHP](#7-dónde-se-escribe-php)
-8. [Variables](#8-variables)
-9. [Funciones](#9-funciones)
-10. [Recibir datos de un formulario](#10-recibir-datos-de-un-formulario)
+6. [Dónde se escribe PHP](#6-dónde-se-escribe-php)
+7. [Variables](#7-variables)
+8. [Funciones](#8-funciones)
+9. [Recibir datos de un formulario](#9-recibir-datos-de-un-formulario)
 
-**Parte C: PHP y bases de datos**
-11. [Leer una tabla de MySQL con PHP](#11-leer-una-tabla-de-mysql-con-php)
-
-[Chuleta final](#chuleta-final)
+[Resumen final](#resumen-final)
 
 ---
 
@@ -198,7 +195,7 @@ Para que se ejecute al **hacer clic** en un botón, se usa el atributo `onclick`
 <input type="button" id="button1" value="Púlsame" onclick="pulsar()">
 ```
 
-**Ejemplo completo** ([`ejemplo2.html`](ejemplos/javascript/ejemplo2.html)):
+**Ejemplo completo**
 
 ```html
 <head>
@@ -216,67 +213,11 @@ Para que se ejecute al **hacer clic** en un botón, se usa el atributo `onclick`
 </body>
 ```
 
-```
-  [ Púlsame ]  ──clic──►  ┌──────────────────────────────────────┐
-                          │ Hola, bienvenido a una página        │
-                          │ habladora                [Aceptar]   │
-                          └──────────────────────────────────────┘
-                          ...y el botón se vuelve rojo
-```
-
-> Aquí el `<script>` puede ir en el `<head>` porque **solo define** la función. No busca el botón hasta que se hace clic, y para entonces la página ya está cargada.
-
----
-
-### 6. jQuery
-
-**jQuery** no es otro lenguaje: es una **librería** de JavaScript, un "kit de atajos" para escribir menos. Para usarla, primero hay que **cargarla**:
-
-```html
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-```
-
-Con jQuery, todo empieza por `$( )`, y dentro se pone un **selector como los de CSS**:
-
-| Selector | Qué selecciona | Igual que en CSS |
-|----------|----------------|------------------|
-| `$("#button1")` | El elemento con id `button1` | `#button1` |
-| `$("p")` | Todos los párrafos | `p` |
-| `$(".aviso")` | Los elementos con clase `aviso` | `.aviso` |
-| `$("a[rel]")` | Los enlaces que tienen atributo `rel` | `a[rel]` |
-
-**El mismo botón del punto 5, con jQuery** ([`ejemplo3.html`](ejemplos/javascript/ejemplo3.html)):
-
-```html
-<script>
-    $(document).ready(function () {          // cuando la página esté lista...
-        $("#button1").click(function () {    // ...al hacer clic en #button1...
-            alert("Has pulsado el botón");
-            $("#button1").css("background-color", "red");
-        });
-    });
-</script>
-
-<input type="button" id="button1" value="Púlsame">
-```
-
-Comparación:
-
-| JavaScript normal | jQuery |
-|-------------------|--------|
-| `document.getElementById("texto")` | `$("#texto")` |
-| `elem.innerHTML = "Hola"` | `$("#texto").html("Hola")` |
-| `elem.style.color = "red"` | `$("#texto").css("color", "red")` |
-
-> ℹ️ jQuery fue muy popular hace unos años. Hoy JavaScript ya hace casi lo mismo sin librerías, pero lo seguirás encontrando en muchas webs, por ejemplo en **WordPress**.
->
-> ¡No confundir **jQuery** con **XQuery**! XQuery es un lenguaje para consultar ficheros XML; no tiene nada que ver.
-
 ---
 
 ## Parte B: PHP en el servidor
 
-> ⚠️ Para esta parte necesitas **XAMPP instalado y Apache encendido** ([Tema 6](../tema06/apuntes.md#parte-a-instalar-y-arrancar-xampp)).
+> ⚠️ Para esta parte necesitas **XAMPP instalado y Apache encendido** 
 
 Los ejemplos están en [`ejemplos/php/`](ejemplos/php/). **No se abren con Live Server**:
 
@@ -435,77 +376,9 @@ Aquí se juntan el **Tema 2** (formularios) y PHP. El formulario envía los dato
 
 ---
 
-## Parte C: PHP y bases de datos
-
-> ⚠️ Para esta parte necesitas la base de datos `biblioteca` creada en el [Tema 6](../tema06/apuntes.md#parte-b-crear-una-base-de-datos-con-phpmyadmin) y **MySQL encendido** en XAMPP.
-
-### 11. Leer una tabla de MySQL con PHP
-
-Una **página dinámica** muestra datos que están guardados en una **base de datos**. Si mañana se añade un libro en la base de datos, la página lo muestra sin tocar el código.
-
-Siempre son **4 pasos**:
-
-```
- 1. Conectar      →  mysqli_connect(servidor, usuario, contraseña, base_de_datos)
- 2. Consultar     →  mysqli_query(conexión, "SELECT ...")
- 3. Recorrer      →  while ($fila = mysqli_fetch_assoc($resultado)) { ... }
- 4. Cerrar        →  mysqli_free_result(...)  y  mysqli_close(...)
-```
-
-**Ejemplo: mostrar los libros de la biblioteca** ([`libros.php`](ejemplos/php/libros.php))
-
-```php
-    <?php
-        // 1. Datos de conexión
-    $servidor = "localhost";
-    $usuario = "root";
-    $clave = "";               // por defecto está vacía en XAMPP
-    $base_datos = "biblioteca";
-
-    // 2. Conectar con el servidor MySQL
-    $conexion = mysqli_connect($servidor, $usuario, $clave, $base_datos);
-    mysqli_set_charset($conexion, "utf8mb4");   // para que salgan bien las tildes y la ñ
-
-    // 2. Consultar
-    $consulta = "SELECT titulo, autor FROM libros";
-    $resultado = mysqli_query($conexion, $consulta);
-
-    // 4. Mostrar los resultados en una tabla HTML
-    echo "<h2>Listado de usuarios</h2>";
-    echo "<table border='1' cellpadding='5'>";
-    echo "<tr><th>título</th><th>Autor</th></tr>";
-
-    while ($fila = mysqli_fetch_assoc($resultado)) {
-        echo "<tr>";
-        echo "<td>" . $fila['titulo'] . "</td>";
-        echo "<td>" . $fila['autor'] . "</td>";
-        echo "</tr>";
-    }
-
-    echo "</table>";
 
 
-    // 4. Cerrar
-    mysqli_free_result($resultado);
-    mysqli_close($conexion);
-?>
-```
-
-```
- Don Quijote de la Mancha — Miguel de Cervantes
- Cien años de soledad — Gabriel García Márquez
- Manolito Gafotas — Elvira Lindo
- El Hobbit — J. R. R. Tolkien
-```
-
-- `mysqli_set_charset` hace que las tildes y la ñ se vean bien. Sin esta línea pueden salir cosas como `aÃ±os` en lugar de `años`.
-- `$fila['titulo']` es el valor de la columna `titulo` en esa fila.
-- El `while` repite el bloque **mientras queden filas**.
-- Para mostrarlo en una **tabla HTML**, en cada vuelta se escribe un `<tr>` con sus `<td>`. Lo tienes hecho en [`libros.php`](ejemplos/php/libros.php).
-
----
-
-## Chuleta final
+## Resumen final
 
 **JavaScript (navegador)**
 
@@ -519,7 +392,6 @@ Siempre son **4 pasos**:
 | Cambiar el estilo | `elem.style.color = "red"` |
 | Crear y añadir un elemento | `createElement`, `createTextNode`, `appendChild` |
 | Ejecutar algo al hacer clic | `onclick="funcion()"` |
-| Lo mismo con jQuery | `$("#id").click(function () { ... })` |
 
 **PHP (servidor)**
 
@@ -531,8 +403,5 @@ Siempre son **4 pasos**:
 | Crear una variable | `$nombre = "Pepe";` |
 | Unir textos | `"Hola " . $nombre` |
 | Recoger un dato de formulario | `$_GET['name']` o `$_POST['name']` |
-| Conectar con MySQL | `mysqli_connect("localhost", "root", "", "bd")` |
-| Que salgan bien las tildes | `mysqli_set_charset($conexion, "utf8mb4")` |
-| Hacer una consulta | `mysqli_query($conexion, "SELECT ...")` |
-| Recorrer resultados | `while ($fila = mysqli_fetch_assoc($resultado))` |
+
 

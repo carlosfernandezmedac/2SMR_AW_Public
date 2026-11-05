@@ -19,8 +19,9 @@
 8. [Crear una tabla](#8-crear-una-tabla)
 9. [Meter datos en la tabla](#9-meter-datos-en-la-tabla) · [¿Dónde se guardan los datos?](#dónde-se-guardan-los-datos)
 10. [Atajo: importar un fichero .sql](#10-atajo-importar-un-fichero-sql)
+11. [Leer una tabla de MySQL con PHP](#11-leer-una-tabla-de-mysql-con-php)
 
-[Chuleta final](#chuleta-final)
+[Resumen final](#resumen-final)
 
 ---
 
@@ -211,8 +212,6 @@ O desde el panel de XAMPP: botón **Admin** de la fila de MySQL.
    menú lateral                    zona de trabajo
 ```
 
-> ℹ️ En el libro aparece la dirección `https://locallhost.me/phpmyadmin`: es una errata. La correcta es `http://localhost/phpmyadmin`.
-
 ---
 
 ### 7. Crear una base de datos
@@ -332,7 +331,76 @@ Esta base de datos es la que usaremos en el **[Tema 4, Parte C](../tema04/apunte
 
 ---
 
-## Chuleta final
+### 11. Leer una tabla de MySQL con PHP
+
+> ⚠️ Para esta parte necesitas la base de datos `biblioteca` creada en el [Tema 6](../tema06/apuntes.md#parte-b-crear-una-base-de-datos-con-phpmyadmin) y **MySQL encendido** en XAMPP.
+
+Una **página dinámica** muestra datos que están guardados en una **base de datos**. Si mañana se añade un libro en la base de datos, la página lo muestra sin tocar el código.
+
+Siempre son **4 pasos**:
+
+```
+ 1. Conectar      →  mysqli_connect(servidor, usuario, contraseña, base_de_datos)
+ 2. Consultar     →  mysqli_query(conexión, "SELECT ...")
+ 3. Recorrer      →  while ($fila = mysqli_fetch_assoc($resultado)) { ... }
+ 4. Cerrar        →  mysqli_free_result(...)  y  mysqli_close(...)
+```
+
+**Ejemplo: mostrar los libros de la biblioteca** ([`libros.php`](ejemplos/php/libros.php))
+
+```php
+    <?php
+        // 1. Datos de conexión
+    $servidor = "localhost";
+    $usuario = "root";
+    $clave = "";               // por defecto está vacía en XAMPP
+    $base_datos = "biblioteca";
+
+    // 2. Conectar con el servidor MySQL
+    $conexion = mysqli_connect($servidor, $usuario, $clave, $base_datos);
+    mysqli_set_charset($conexion, "utf8mb4");   // para que salgan bien las tildes y la ñ
+
+    // 2. Consultar
+    $consulta = "SELECT titulo, autor FROM libros";
+    $resultado = mysqli_query($conexion, $consulta);
+
+    // 4. Mostrar los resultados en una tabla HTML
+    echo "<h2>Listado de usuarios</h2>";
+    echo "<table border='1' cellpadding='5'>";
+    echo "<tr><th>título</th><th>Autor</th></tr>";
+
+    while ($fila = mysqli_fetch_assoc($resultado)) {
+        echo "<tr>";
+        echo "<td>" . $fila['titulo'] . "</td>";
+        echo "<td>" . $fila['autor'] . "</td>";
+        echo "</tr>";
+    }
+
+    echo "</table>";
+
+
+    // 4. Cerrar
+    mysqli_free_result($resultado);
+    mysqli_close($conexion);
+?>
+```
+
+```
+ Don Quijote de la Mancha — Miguel de Cervantes
+ Cien años de soledad — Gabriel García Márquez
+ Manolito Gafotas — Elvira Lindo
+ El Hobbit — J. R. R. Tolkien
+```
+
+- `mysqli_set_charset` hace que las tildes y la ñ se vean bien. Sin esta línea pueden salir cosas como `aÃ±os` en lugar de `años`.
+- `$fila['titulo']` es el valor de la columna `titulo` en esa fila.
+- El `while` repite el bloque **mientras queden filas**.
+- Para mostrarlo en una **tabla HTML**, en cada vuelta se escribe un `<tr>` con sus `<td>`. Lo tienes hecho en [`libros.php`](ejemplos/php/libros.php).
+
+---
+
+
+## Resumen final
 
 | Quiero... | Cómo |
 |-----------|------|
@@ -349,6 +417,10 @@ Esta base de datos es la que usaremos en el **[Tema 4, Parte C](../tema04/apunte
 | Usuario y contraseña de MySQL en XAMPP | `root` y contraseña **vacía** |
 | MySQL de XAMPP no arranca (puerto 3306) | Detener el servicio **MySQL80** en `services.msc` |
 | Dónde están los datos | `C:\xampp\mysql\data\` (los guarda MySQL, no PHP) |
+| Conectar con MySQL | `mysqli_connect("localhost", "root", "", "bd")` |
+| Que salgan bien las tildes | `mysqli_set_charset($conexion, "utf8mb4")` |
+| Hacer una consulta | `mysqli_query($conexion, "SELECT ...")` |
+| Recorrer resultados | `while ($fila = mysqli_fetch_assoc($resultado))` |
 
 | Puerto | Servicio |
 |--------|----------|
