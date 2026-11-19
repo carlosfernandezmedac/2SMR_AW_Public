@@ -107,7 +107,7 @@ Lo más importante: **el contenido y el diseño van separados**, igual que el HT
 | Inconveniente | Lo instalas y actualizas **tú** | Más caro y **dependes** de la empresa |
 | Ejemplos | WordPress, Joomla!, Drupal, Moodle | Shopify, Wix, Sitecore |
 
-> ℹ️ El libro dice que el software libre es "menos seguro". Más bien, el peligro está en **no actualizarlo**: WordPress, por ejemplo, saca actualizaciones de seguridad muy a menudo.
+> ℹ️ Se dice que el software libre es "menos seguro". Más bien, el peligro está en **no actualizarlo**: WordPress, por ejemplo, saca actualizaciones de seguridad muy a menudo.
 
 ---
 
@@ -117,7 +117,6 @@ Lo más importante: **el contenido y el diseño van separados**, igual que el HT
 
 Según [W3Techs](https://w3techs.com/technologies/overview/content_management) (noviembre de 2026), **WordPress** se usa en el **38,5 % de todas las webs del mundo** y en el **57,5 % de las webs hechas con un CMS**.
 
-> ℹ️ La tabla del libro tiene datos antiguos. Además, **Adobe Dreamweaver no es un CMS** (es un editor de HTML) y **Wix es propietario**.
 
 ### WordPress
 
